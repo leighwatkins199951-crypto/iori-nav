@@ -298,6 +298,10 @@ export function validateOrigin(request) {
 // 导出中间件(可选,用于添加全局逻辑)
 export async function onRequest(context) {
   const { request, env } = context;
+  // The existing rin-server deployment uses DB/ASSETS naming. Keep the
+  // upstream NAV_* names compatible so the same code can use those bindings.
+  env.NAV_DB = env.NAV_DB || env.DB;
+  env.NAV_AUTH = env.NAV_AUTH || env.AUTH || env.KV;
   const method = request.method.toUpperCase();
   const url = new URL(request.url);
 

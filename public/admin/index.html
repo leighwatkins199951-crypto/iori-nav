@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>书签管理页面</title>
+  <title>产品管理后台</title>
   <link rel="icon" href="/favicon.svg?v=148aafdf" type="image/svg+xml">
   <link rel="stylesheet" href="/css/admin-layout.css?v=42e6c65a" />
   <link rel="stylesheet" href="/css/admin-forms.css?v=ffc88cf4" />
@@ -31,7 +31,7 @@
   <div class="container">
     <header class="admin-header">
       <div>
-        <h1>书签管理</h1>
+        <h1>产品管理</h1>
         <p class="admin-subtitle">
           管理后台仅限受信任的管理员使用，请妥善保管账号
         </p>
@@ -54,8 +54,8 @@
     <div class="import-export">
       <div id="categoryFilterWrapper" class="custom-dropdown-wrapper min-w-[150px]"></div>
       <input type="hidden" id="categoryFilter" value="">
-      <div id="searchInput" role="searchbox" contenteditable="true" tabindex="0" aria-label="搜索书签"
-        aria-multiline="false" data-placeholder="搜索书签(名称, URL, 分类)" data-empty="true"
+      <div id="searchInput" role="searchbox" contenteditable="true" tabindex="0" aria-label="搜索产品"
+        aria-multiline="false" data-placeholder="搜索产品(名称, URL, 分类)" data-empty="true"
         class="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition-shadow h-[42px]"
       ></div>
       <input type="file" id="importFile" accept=".json,.html,.htm" style="display: none" />
@@ -78,7 +78,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          新增书签
+          新增产品
         </button>
         <button id="settingsBtn"
           class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition-colors shadow-sm font-medium text-sm h-[42px] whitespace-nowrap">设置</button>
@@ -117,7 +117,7 @@
       <div class="modal-content" style="max-width: 480px;">
         <span class="modal-close" id="closeImportSourceModal">×</span>
         <h2>选择导入方式</h2>
-        <p class="text-sm text-gray-500 mb-4">请选择书签数据的来源。</p>
+        <p class="text-sm text-gray-500 mb-4">请选择产品数据的来源。</p>
         <div class="library-list">
           <button type="button" class="library-item" id="importFromFileBtn">
             <div>
@@ -127,21 +127,21 @@
           </button>
           <button type="button" class="library-item" id="importFromLibraryBtn">
             <div>
-              <div class="library-name">公共书签库</div>
-              <div class="library-desc">从独立维护的公共书签库导入</div>
+              <div class="library-name">公共产品库</div>
+              <div class="library-desc">从独立维护的公共产品库导入</div>
             </div>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- 公共书签库模态框 -->
+    <!-- 公共产品库模态框 -->
     <div id="publicLibraryModal" class="modal" style="display: none; z-index: 2000;">
       <div class="modal-content" style="max-width: 520px;">
         <span class="modal-close" id="closeLibraryModal">×</span>
-        <h2>从公共书签库导入</h2>
-        <p class="text-sm text-gray-500 mb-4">选择一个书签库，将其中所有书签导入当前导航。</p>
-        <div id="libraryLoading" class="text-sm text-gray-500 my-4">正在加载书签库...</div>
+        <h2>从公共产品库导入</h2>
+        <p class="text-sm text-gray-500 mb-4">选择一个产品库，将其中所有书签导入当前导航。</p>
+        <div id="libraryLoading" class="text-sm text-gray-500 my-4">正在加载产品库...</div>
         <div id="libraryError" class="error" style="display: none; padding: 10px; border-radius: 4px; margin: 0 0 12px; font-size: 14px;"></div>
         <div id="libraryList" class="library-list"></div>
         <div class="flex justify-end gap-3 mt-4">
@@ -194,7 +194,7 @@
         <span class="modal-close" id="closeDeleteConfirmModal">×</span>
         <h2>确认删除</h2>
         <div class="p-4">
-          <p class="text-gray-700 font-medium text-base mb-2">确定要删除该书签吗？</p>
+          <p class="text-gray-700 font-medium text-base mb-2">确定要删除该产品吗？</p>
           <p class="text-gray-500 text-sm">此操作无法撤销，请谨慎操作。</p>
         </div>
         <div class="flex justify-end gap-3 mt-4">
@@ -337,11 +337,11 @@
     </div>
 
 
-    <!-- 新增书签模态框 -->
+    <!-- 新增产品模态框 -->
     <div id="addBookmarkModal" class="modal" style="display: none">
       <div class="modal-content">
         <span class="modal-close" id="closeBookmarkModal">×</span>
-        <h2>新增书签</h2>
+        <h2>新增产品</h2>
         <form id="addBookmarkForm">
           <div class="form-group">
             <label for="addBookmarkName">名称:</label>
@@ -572,7 +572,7 @@
                     <label class="search-engine-option" data-engine="github"><span>Github</span></label>
                   </div>
                   <div class="live-search-box">
-                    <input type="text" name="search" placeholder="搜索书签..."
+                    <input type="text" name="search" placeholder="搜索产品..."
                       class="search-input-target w-full pl-12 pr-4 py-3.5 rounded-2xl transition-all shadow-lg outline-none focus:outline-none focus:ring-2"
                       autocomplete="off" readonly>
                     <svg xmlns="http://www.w3.org/2000/svg" class="live-search-icon h-6 w-6 absolute left-4 top-3.5"

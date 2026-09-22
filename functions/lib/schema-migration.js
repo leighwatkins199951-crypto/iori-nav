@@ -1,4 +1,5 @@
 import { DB_SCHEMA, SCHEMA_VERSION, PREVIOUS_SCHEMA_VERSION } from '../constants';
+import { PRODUCT_SEED } from './product-seed';
 
 let schemaReady = false;
 let schemaReadyPromise = null;
@@ -42,6 +43,9 @@ async function runIncrementalMigrations(env) {
   if (sitesMissingCatalogName) {
     alterStatements.push(env.NAV_DB.prepare('ALTER TABLE sites ADD COLUMN catelog_name TEXT'));
   }
+  if (!sitesCols.has('product_type')) {
+    alterStatements.push(env.NAV_DB.prepare('ALTER TABLE sites ADD COLUMN product_type TEXT'));
+  }
   if (pendingMissingCatalogName) {
     alterStatements.push(env.NAV_DB.prepare('ALTER TABLE pending_sites ADD COLUMN catelog_name TEXT'));
   }
@@ -81,6 +85,45 @@ async function runIncrementalMigrations(env) {
   }
 }
 
+async function seedProductCatalogue(env) {
+  const existing = await env.NAV_DB.prepare('SELECT COUNT(*) AS total FROM sites').first();
+  if (Number(existing?.total || 0) > 0) return;
+
+  const categoryNames = ['Courier Packaging Bags', 'Plastic Granules', 'Pillows'];
+  for (let i = 0; i < categoryNames.length; i += 1) {
+    await env.NAV_DB.prepare(`INSERT INTO category (catelog, sort_order, parent_id, is_private)
+      SELECT ?, ?, 0, 0 WHERE NOT EXISTS (SELECT 1 FROM category WHERE catelog = ?)`)
+      .bind(categoryNames[i], i + 1, categoryNames[i]).run();
+  }
+
+  const packaging = await env.NAV_DB.prepare('SELECT id FROM category WHERE catelog = ? LIMIT 1')
+    .bind(categoryNames[0]).first();
+  if (!packaging) return;
+
+  const statement = env.NAV_DB.prepare(`INSERT INTO sites
+    (name, url, logo, desc, catelog_id, catelog_name, product_type, sort_order, is_private)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)`);
+  const rows = PRODUCT_SEED.map(product => statement.bind(
+    product.name,
+    'https://wa.me/85256426295',
+    `/${product.image}`,
+    product.description,
+    packaging.id,
+    categoryNames[0],
+    product.category,
+    product.id,
+  ));
+  for (let offset = 0; offset < rows.length; offset += 40) {
+    await env.NAV_DB.batch(rows.slice(offset, offset + 40));
+  }
+
+  await env.NAV_DB.batch([
+    env.NAV_DB.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('home_site_name', 'BEST CHOICE')`),
+    env.NAV_DB.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('home_site_description', 'Reliable packaging and product supply for brands, retailers and ecommerce operations worldwide.')`),
+    env.NAV_DB.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('home_footer_text', 'Worldwide B2B enquiries welcome.')`),
+  ]);
+}
+
 export async function ensureSchemaReady(env) {
   if (!env || !env.NAV_DB) return;
   if (schemaReady) return;
@@ -107,6 +150,7 @@ export async function ensureSchemaReady(env) {
     try {
       await runBaseSchema(env.NAV_DB);
       await runIncrementalMigrations(env);
+      await seedProductCatalogue(env);
 
       if (kv) {
         await kv.put(`schema_migrated_${SCHEMA_VERSION}`, 'true');

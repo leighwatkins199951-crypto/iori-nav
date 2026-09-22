@@ -62,7 +62,7 @@ function render() {
 
 function showDetail(p) {
   if (!p) return;
-  document.querySelector('#detail-content').innerHTML = `<img src="${esc(safeImage(p.image))}" alt="${esc(p.name)}"><div><span class="eyebrow">${esc((p.category || activeDivision).toUpperCase())}</span><h2>${esc(p.name)}</h2>${p.cn ? `<p class="cn">${esc(p.cn)}</p>` : ''}<p>${esc(p.description || '')}</p><a class="button" href="${esc(p.url || 'https://wa.me/85256426295')}" target="_blank" rel="noopener">Ask about this product ↗</a></div>`;
+  document.querySelector('#detail-content').innerHTML = `<img src="${esc(safeImage(p.image))}" alt="${esc(p.name)}"><div><span class="eyebrow">${esc((p.category || activeDivision).toUpperCase())}</span><h2>${esc(p.name)}</h2>${p.cn ? `<p class="cn">${esc(p.cn)}</p>` : ''}<p>${esc(p.description || '')}</p><a class="button" href="${esc(p.url || 'https://wa.me/8613829236682')}" target="_blank" rel="noopener">Ask about this product ↗</a></div>`;
   document.querySelector('#detail').showModal();
 }
 

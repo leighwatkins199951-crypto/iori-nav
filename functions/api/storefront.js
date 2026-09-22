@@ -11,7 +11,7 @@ export async function onRequestGet({ env }) {
       catelog_id AS categoryId, catelog_name AS division, COALESCE(product_type, 'all') AS category
       FROM sites WHERE is_private = 0 ORDER BY sort_order, id`).all(),
     env.NAV_DB.prepare(`SELECT key, value FROM settings
-      WHERE key IN ('home_site_name','home_site_description','home_footer_text','home_title_color')`).all(),
+      WHERE key IN ('home_site_name','home_site_description','home_footer_text','home_title_color','contact_whatsapp')`).all(),
   ]);
 
   return jsonResponse({

@@ -9,8 +9,9 @@ export function normalizeSortOrder(val) {
 }
 
 export function isSubmissionEnabled(env) {
-  // Convert to string to handle both boolean `true` from toml and string 'true' from secrets
-  return String(env.ENABLE_PUBLIC_SUBMISSION) === 'true';
+  // This deployment is owner-managed. Public write submissions stay disabled even
+  // if an environment variable is accidentally enabled.
+  return false;
 }
 
 export async function isAdminAuthenticated(request, env) {

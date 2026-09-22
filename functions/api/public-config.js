@@ -9,7 +9,7 @@ import { getTurnstileConfig } from '../lib/turnstile';
  * @returns {Response} JSON response with public settings
  */
 export async function onRequestGet({ env }) {
-  const submissionEnabled = String(env.ENABLE_PUBLIC_SUBMISSION) === 'true';
+  const submissionEnabled = false;
   const turnstileConfig = getTurnstileConfig(env);
 
   const aiRequestDelay = parseInt(env.AI_REQUEST_DELAY, 10);

@@ -31,6 +31,7 @@ export const SETTINGS_SCHEMA = {
     home_site_name: { default: '', type: 'string' },
     home_site_description: { default: '', type: 'string' },
     home_footer_text: { default: '', type: 'string' },
+    contact_whatsapp: { default: '', type: 'string' },
     home_search_engine_enabled: { default: false, type: 'bool' },
     home_default_category: { default: '', type: 'string' },
     home_remember_last_category: { default: false, type: 'bool' },
@@ -126,6 +127,15 @@ function normalizeBoolean(value) {
 
 function normalizeIntegerRange(value, min, max, fallback = '') {
     const text = String(value ?? '').trim();
+
+    if (key === 'contact_whatsapp') {
+        if (!text) return { ok: true, value: '' };
+        const digits = text.replace(/[\s()+-]/g, '');
+        if (!/^\d{8,15}$/.test(digits)) {
+            return { ok: false, message: 'WhatsApp number must contain 8 to 15 digits including country code' };
+        }
+        return { ok: true, value: digits };
+    }
     if (!text) return fallback;
     const num = Number(text);
     if (!Number.isInteger(num) || num < min || num > max) return null;

@@ -105,7 +105,7 @@ async function seedProductCatalogue(env) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)`);
   const rows = PRODUCT_SEED.map(product => statement.bind(
     product.name,
-    'https://wa.me/8613829236682',
+    'https://www.bestchoice.xin/#contact',
     `/${product.image}`,
     product.description,
     packaging.id,

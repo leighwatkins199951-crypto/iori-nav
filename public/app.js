@@ -8,6 +8,7 @@ let activeDivision = 'Courier Packaging Bags';
 let activeFilter = 'all';
 let query = '';
 let dynamicProducts = [];
+let contactWhatsapp = '';
 
 if (window.innerWidth <= 980) {
   document.body.classList.add('nav-closed');
@@ -19,6 +20,20 @@ const safeImage = value => {
   const text = String(value || '').trim();
   return /^(https?:\/\/|\/)/i.test(text) ? text : '/images/hero-packaging.jpg';
 };
+const whatsappHref = () => contactWhatsapp ? `https://wa.me/${contactWhatsapp}` : '';
+
+function renderContact() {
+  const href = whatsappHref();
+  const whatsapp = document.querySelector('#contact-whatsapp');
+  const phone = document.querySelector('#contact-phone');
+  whatsapp.hidden = !href;
+  phone.hidden = !contactWhatsapp;
+  if (href) whatsapp.href = href;
+  if (contactWhatsapp) {
+    phone.href = `tel:+${contactWhatsapp}`;
+    phone.textContent = `+${contactWhatsapp}`;
+  }
+}
 
 function staticPackaging() {
   return (window.PRODUCTS || PRODUCTS || []).map(p => ({ ...p, image: `/${p.image}`, division: 'Courier Packaging Bags' }));
@@ -50,6 +65,7 @@ function render() {
   document.querySelector('#division-copy').textContent = meta.copy;
   const brochure = document.querySelector('#division-brochure');
   brochure.hidden = activeDivision !== 'Plastic Granules';
+  renderContact();
   renderFilters(all);
   document.querySelector('#count').textContent = all.length ? `${visible.length} of ${all.length} products` : '';
   const grid = document.querySelector('#products');
@@ -62,7 +78,8 @@ function render() {
 
 function showDetail(p) {
   if (!p) return;
-  document.querySelector('#detail-content').innerHTML = `<img src="${esc(safeImage(p.image))}" alt="${esc(p.name)}"><div><span class="eyebrow">${esc((p.category || activeDivision).toUpperCase())}</span><h2>${esc(p.name)}</h2>${p.cn ? `<p class="cn">${esc(p.cn)}</p>` : ''}<p>${esc(p.description || '')}</p><a class="button" href="${esc(p.url || 'https://wa.me/8613829236682')}" target="_blank" rel="noopener">Ask about this product ↗</a></div>`;
+  const enquiry = whatsappHref() ? `<a class="button" href="${esc(whatsappHref())}" target="_blank" rel="noopener">Ask about this product ↗</a>` : '';
+  document.querySelector('#detail-content').innerHTML = `<img src="${esc(safeImage(p.image))}" alt="${esc(p.name)}"><div><span class="eyebrow">${esc((p.category || activeDivision).toUpperCase())}</span><h2>${esc(p.name)}</h2>${p.cn ? `<p class="cn">${esc(p.cn)}</p>` : ''}<p>${esc(p.description || '')}</p>${enquiry}</div>`;
   document.querySelector('#detail').showModal();
 }
 
@@ -74,6 +91,7 @@ async function loadStorefront() {
     const products = payload.data?.products || [];
     if (products.length) dynamicProducts = products;
     const settings = payload.data?.settings || {};
+    contactWhatsapp = String(settings.contact_whatsapp || '').replace(/\D/g, '').slice(0, 15);
     if (settings.home_site_name) document.querySelectorAll('.brand span:last-child').forEach(el => { el.childNodes[0].nodeValue = settings.home_site_name; });
     if (settings.home_site_description) document.querySelector('.hero .intro').textContent = settings.home_site_description;
   } catch (_) { /* Static catalogue stays available if the API is not configured yet. */ }

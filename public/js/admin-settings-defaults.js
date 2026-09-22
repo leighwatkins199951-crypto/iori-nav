@@ -76,6 +76,7 @@
   // webdav_dir 留空的语义是「备份放根目录」，用 truthy 判断会让清空操作被内存里的旧值顶掉。
   const DEFINED_STRING_FIELDS = [
     'bing_country',
+    'contact_whatsapp',
     'webdav_url',
     'webdav_username',
     'webdav_dir',
@@ -126,6 +127,7 @@
       home_site_name: '',
       home_site_description: '',
       home_footer_text: '',
+      contact_whatsapp: '',
       home_category_position: 'below_search',
       home_category_flow: 'single_line',
       layout_enable_frosted_glass: false,

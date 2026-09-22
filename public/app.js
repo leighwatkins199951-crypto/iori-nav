@@ -1,6 +1,6 @@
 const labels = {
   'Courier Packaging Bags': { title: 'Find your next<br>packaging essential.', copy: 'Explore our current packaging range. Select a product to review its purpose and start an enquiry.' },
-  'Plastic Granules': { title: 'Materials for your<br>next production run.', copy: 'Build this division with resin grades, colours, applications and technical information from the admin area.' },
+  'Plastic Granules': { title: 'Masterbatch built for<br>your production line.', copy: 'Explore filling, functional and biodegradable material solutions for film, sheet, pipe, molding and nonwoven applications.' },
   Pillows: { title: 'Comfort made<br>for your market.', copy: 'Build this division with pillow styles, fillings, dimensions and custom packaging options from the admin area.' },
 };
 
@@ -30,14 +30,12 @@ function productList() {
 }
 
 function filterKey(product) {
-  if (product.division !== 'Courier Packaging Bags') return 'all';
   return product.category || 'other';
 }
 
 function renderFilters(products) {
   const host = document.querySelector('#filters');
-  if (activeDivision !== 'Courier Packaging Bags') { host.innerHTML = ''; return; }
-  const names = { all:'All', mailers:'PE mailers', bubble:'Bubble mailers', cushioning:'Cushioning', retail:'Retail & garment', supplies:'Shipping supplies' };
+  const names = { all:'All', mailers:'PE mailers', bubble:'Bubble mailers', cushioning:'Cushioning', retail:'Retail & garment', supplies:'Shipping supplies', film:'Film applications', extrusion:'Sheet, pipe & extrusion', molding:'Molding', functional:'Functional masterbatch', sustainable:'Sustainable materials', mineral:'Mineral fillers' };
   const keys = ['all', ...new Set(products.map(filterKey))];
   host.innerHTML = keys.map(key => `<button aria-pressed="${activeFilter === key}" data-filter="${esc(key)}">${esc(names[key] || key)}</button>`).join('');
   host.querySelectorAll('button').forEach(button => button.addEventListener('click', () => { activeFilter = button.dataset.filter; render(); }));
@@ -50,6 +48,8 @@ function render() {
   document.querySelector('#division-kicker').textContent = activeDivision.toUpperCase();
   document.querySelector('#division-title').innerHTML = meta.title;
   document.querySelector('#division-copy').textContent = meta.copy;
+  const brochure = document.querySelector('#division-brochure');
+  brochure.hidden = activeDivision !== 'Plastic Granules';
   renderFilters(all);
   document.querySelector('#count').textContent = all.length ? `${visible.length} of ${all.length} products` : '';
   const grid = document.querySelector('#products');

@@ -75,6 +75,9 @@ body { overflow-x: hidden; }
 .product-body { padding-bottom: 5px; }
 .product-body > p:not(.cn) { display: none; }
 .product .cn { min-height: 1.5em; }
+.division-intro { max-width: 430px; }
+.division-intro > p { color: var(--muted); margin: 0 0 14px; }
+#division-brochure { color: var(--accent); font-size: 14px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 .empty-division { background: #fff; border-color: var(--line); }
 .empty-division span { color: var(--accent); }
 .empty-division p { color: var(--muted); }

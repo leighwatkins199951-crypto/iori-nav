@@ -1,0 +1,16 @@
+name = "bestchoice-site"
+main = "dist-functions/index.js"
+compatibility_date = "2026-09-22"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "NAV_AUTH"
+id = "bdb0b51585e04e4796a20f51edbd3e02"
+
+[[d1_databases]]
+binding = "NAV_DB"
+database_name = "book"
+database_id = "f606466b-8ec1-4178-8e98-f366db5dad03"

@@ -6,6 +6,8 @@ node_modules/
 .agent-teams/
 .wrangler/
 wrangler.toml
+dist-functions/
+.cf-config/
 
 # Husky internal files
 .husky/_

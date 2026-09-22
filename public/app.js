@@ -39,7 +39,7 @@ function renderFilters(products) {
   if (activeDivision !== 'Courier Packaging Bags') { host.innerHTML = ''; return; }
   const names = { all:'All', mailers:'PE mailers', bubble:'Bubble mailers', cushioning:'Cushioning', retail:'Retail & garment', supplies:'Shipping supplies' };
   const keys = ['all', ...new Set(products.map(filterKey))];
-  host.innerHTML = keys.map(key => `<button class="${activeFilter === key ? 'active' : ''}" data-filter="${esc(key)}">${esc(names[key] || key)}</button>`).join('');
+  host.innerHTML = keys.map(key => `<button aria-pressed="${activeFilter === key}" data-filter="${esc(key)}">${esc(names[key] || key)}</button>`).join('');
   host.querySelectorAll('button').forEach(button => button.addEventListener('click', () => { activeFilter = button.dataset.filter; render(); }));
 }
 
@@ -56,7 +56,7 @@ function render() {
   const empty = document.querySelector('#empty-division');
   empty.hidden = all.length > 0;
   grid.hidden = all.length === 0;
-  grid.innerHTML = visible.map(p => `<article class="product" tabindex="0" data-id="${esc(p.id)}"><div class="product-image"><img loading="lazy" src="${esc(safeImage(p.image))}" alt="${esc(p.name)}"></div><div class="product-body"><span>${esc((p.category || activeDivision).toUpperCase())}</span><h3>${esc(p.name)}</h3>${p.cn ? `<p class="cn">${esc(p.cn)}</p>` : ''}<p>${esc(p.description || '')}</p><b>View product ↗</b></div></article>`).join('');
+  grid.innerHTML = visible.map(p => `<article class="product" tabindex="0" data-id="${esc(p.id)}"><div class="product-photo"><img loading="lazy" src="${esc(safeImage(p.image))}" alt="${esc(p.name)}"><span class="product-arrow">↗</span></div><div class="product-body"><span class="product-type">${esc((p.category || activeDivision).toUpperCase())}</span><h3>${esc(p.name)}</h3>${p.cn ? `<p class="cn">${esc(p.cn)}</p>` : ''}<p>${esc(p.description || '')}</p></div></article>`).join('');
   grid.querySelectorAll('.product').forEach(card => { const open = () => showDetail(visible.find(p => String(p.id) === card.dataset.id)); card.addEventListener('click', open); card.addEventListener('keydown', e => { if (e.key === 'Enter') open(); }); });
 }
 

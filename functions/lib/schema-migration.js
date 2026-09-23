@@ -89,7 +89,7 @@ async function seedProductCatalogue(env) {
   const existing = await env.NAV_DB.prepare('SELECT COUNT(*) AS total FROM sites').first();
   if (Number(existing?.total || 0) > 0) return;
 
-  const categoryNames = ['Courier Packaging Bags', 'Plastic Granules', 'Pillows'];
+  const categoryNames = ['Courier Packaging Bags', 'Plastic Granules', 'Pillows', 'Headphones'];
   for (let i = 0; i < categoryNames.length; i += 1) {
     await env.NAV_DB.prepare(`INSERT INTO category (catelog, sort_order, parent_id, is_private)
       SELECT ?, ?, 0, 0 WHERE NOT EXISTS (SELECT 1 FROM category WHERE catelog = ?)`)

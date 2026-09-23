@@ -2,6 +2,7 @@ const labels = {
   'Courier Packaging Bags': { title: 'Find your next<br>packaging essential.', copy: 'Explore our current packaging range. Select a product to review its purpose and start an enquiry.' },
   'Plastic Granules': { title: 'Masterbatch built for<br>your production line.', copy: 'Explore filling, functional and biodegradable material solutions for film, sheet, pipe, molding and nonwoven applications.' },
   Pillows: { title: 'Comfort made<br>for your market.', copy: 'Build this division with pillow styles, fillings, dimensions and custom packaging options from the admin area.' },
+  Headphones: { title: 'Low-latency sound<br>built for play.', copy: 'Explore dual-mode gaming headsets with Bluetooth, 2.4G wireless and 3.5 mm wired connectivity. Minimum order: 100 units.' },
 };
 
 let activeDivision = 'Courier Packaging Bags';
